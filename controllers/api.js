@@ -1,4 +1,3 @@
-const { HttpError, ctrlWrapper } = require("../helpers");
 const axios = require("axios");
 
 const getInfo = async (req, res) => {
@@ -16,8 +15,14 @@ const getInfo = async (req, res) => {
 
     res.status(200).json(response.data);
   } catch (error) {
-    const responseBody = error.response.data;
-    res.status(error.response.status).json(responseBody);
+    if (error.response && error.response.status) {
+      if (error.response.data) {
+        const responseBody = error.response.data;
+        res.status(error.response.status).json(responseBody);
+      } else {
+        res.status(error.response.status).json({ error: error.message });
+      }
+    }
   }
 };
 module.exports = {
