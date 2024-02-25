@@ -1,4 +1,5 @@
 const axios = require("axios");
+const { ctrlWrapper } = require("../helpers");
 
 const getInfo = async (req, res) => {
   try {
@@ -7,11 +8,16 @@ const getInfo = async (req, res) => {
     const apiKeyValue = process.env.KEY_VALUE;
     const apiUrl = `https://my3.soliq.uz/api/remote-access-api/company/info/${id}?type=full`;
     console.log(apiKeyValue, apiKeyName);
-    const response = await axios.get(apiUrl, {
-      headers: {
-        [apiKeyName]: apiKeyValue,
-      },
-    });
+
+    const response = await axios.get(
+      apiUrl,
+      { timeout: 5000 },
+      {
+        headers: {
+          [apiKeyName]: apiKeyValue,
+        },
+      }
+    );
     console.log(response);
     res.status(200).json(response.data);
   } catch (error) {
@@ -27,5 +33,5 @@ const getInfo = async (req, res) => {
   }
 };
 module.exports = {
-  getInfo,
+  getInfo: ctrlWrapper(getInfo),
 };
