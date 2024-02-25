@@ -11,7 +11,7 @@ const getInfo = async (req, res) => {
 
     const response = await axios.get(
       apiUrl,
-      { timeout: 5000 },
+      { timeout: 10000 },
       {
         headers: {
           [apiKeyName]: apiKeyValue,
